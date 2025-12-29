@@ -1,29 +1,28 @@
 import os
 from functools import wraps
-from flask import Flask, render_template, request, redirect, url_for, session, abort
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__, template_folder="templates")
 
-# ✅ Needed for sessions (keep this secret!)
-# For local dev it's fine; for hosting set it as an env var too.
-app.secret_key = os.environ.get("SECRET_KEY", "change-me-please-very-secret")
+# Needed for sessions (change this!)
+app.secret_key = "CHANGE_THIS_SECRET_KEY_123456789"
 
-# ✅ Admin password (set this in environment variables)
-ADMIN_PASSWORD = "MyStaticPassword123!"
-  # change default!
+# 🔒 STATIC ADMIN PASSWORD (change this!)
+ADMIN_PASSWORD = "MyStrongPassword123!"
 
 # =========================
 # BACK OFFICE (YOU EDIT THIS)
 updates = {
     1: {"name": "RAS (possible bureau)", "news": "Add your RAS update here..."},
     2: {"name": "CS (possible bureau)", "news": "Add your CS update here..."},
-    3: {"name": "PES-IES (posible bureau)", "news": "Add your PES update here..."},
+    3: {"name": "PES (iesposible bureau)", "news": "Add your PES update here..."},
     4: {"name": "IAS (posible bureau)", "news": "Add your IAS update here..."},
     5: {"name": "EMBS (posible bureau)", "news": "Add your EMBS update here..."},
     6: {"name": "WIE (posible bureau)", "news": "Add your WIE update here..."},
     7: {"name": "CAS (posible bureau)", "news": "Add your CAS update here..."},
 }
 # =========================
+
 
 def login_required(fn):
     @wraps(fn)
@@ -43,7 +42,6 @@ def home():
 
 @app.get("/login")
 def login():
-    # If already logged in, go to admin
     if session.get("is_admin"):
         return redirect(url_for("admin"))
     nxt = request.args.get("next", "/admin")
@@ -55,7 +53,6 @@ def login_post():
     password = request.form.get("password", "")
     nxt = request.form.get("next", "/admin")
 
-    # Constant-time-ish check not needed here, but keep it simple.
     if password == ADMIN_PASSWORD:
         session["is_admin"] = True
         return redirect(nxt if nxt.startswith("/") else "/admin")
@@ -85,10 +82,7 @@ def update():
     return redirect(url_for("admin"))
 
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    # ✅ IMPORTANT for Replit/Render: use PORT + 0.0.0.0
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
