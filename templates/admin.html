@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin – Elections Today</title>
+
+  <style>
+    body{
+      margin:0;
+      background:#0F172A;
+      color:#F8FAFC;
+      font-family: Arial, sans-serif;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 24px;
+      background:#111827;
+      border-bottom:1px solid #1E293B;
+    }
+
+    a{
+      color:#60A5FA;
+      text-decoration:none;
+      margin-left:12px;
+    }
+
+    main{
+      max-width:900px;
+      margin:24px auto;
+      padding:0 16px;
+    }
+
+    .card{
+      background:#111827;
+      border:1px solid #1E293B;
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:16px;
+    }
+
+    textarea{
+      width:100%;
+      min-height:120px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid #2563EB;
+      background:#0F172A;
+      color:white;
+      resize:vertical;
+    }
+
+    button{
+      margin-top:10px;
+      padding:10px 14px;
+      border:none;
+      border-radius:12px;
+      background: linear-gradient(135deg,#2563EB,#F97316);
+      color:white;
+      font-weight:bold;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <b>Admin – Elections Today</b>
+    <div>
+      <a href="/">User page</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <main>
+    {% for n, data in updates.items() %}
+      <div class="card">
+        <h3>#{{ n }} — {{ data.name }}</h3>
+
+        <form method="post" action="/update">
+          <input type="hidden" name="n" value="{{ n }}">
+          <textarea name="news">{{ data.news }}</textarea>
+          <br>
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    {% endfor %}
+  </main>
+</body>
+</html>

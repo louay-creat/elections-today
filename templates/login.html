@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login — Elections Today</title>
+
+  <style>
+    :root{
+      --blue-main:   #2563EB;
+      --blue-soft:   #60A5FA;
+      --blue-dark:   #1E3A8A;
+
+      --orange-main: #F97316;
+      --orange-soft: #FDBA74;
+      --orange-dark: #C2410C;
+
+      --bg-main:     #0F172A;
+      --card-bg:     #111827;
+      --border:      #1E293B;
+
+      --text-main:   #F8FAFC;
+      --text-muted:  #94A3B8;
+      --danger:      #FF6B6B;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 10% 0%, rgba(37,99,235,0.35), transparent 60%),
+                  radial-gradient(1000px 600px at 90% 0%, rgba(249,115,22,0.30), transparent 60%),
+                  linear-gradient(135deg, var(--blue-dark), var(--bg-main));
+      color: var(--text-main);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+    }
+
+    .card{
+      width: min(520px, 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(17,24,39,0.78);
+      padding: 18px;
+      box-shadow: 0 20px 70px rgba(0,0,0,0.35);
+    }
+
+    h1{ margin:0; font-size:18px; }
+    p{ margin:8px 0 0; color: var(--text-muted); font-size: 13px; line-height: 1.4; }
+
+    label{ display:block; margin-top:14px; color: var(--text-muted); font-size: 13px; }
+    input{
+      width:100%;
+      margin-top:8px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(96,165,250,0.45);
+      background: rgba(15,23,42,0.35);
+      color: var(--text-main);
+      outline:none;
+      font-size:14px;
+    }
+    input:focus{
+      border-color: var(--orange-main);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.22);
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top: 14px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    button{
+      cursor:pointer;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--blue-main), var(--orange-main));
+      color: white;
+      font-weight: 800;
+    }
+    button:hover{
+      background: linear-gradient(135deg, var(--blue-dark), var(--orange-dark));
+    }
+
+    a{
+      color: var(--blue-soft);
+      text-decoration:none;
+      font-size: 13px;
+    }
+    a:hover{ text-decoration: underline; }
+
+    .err{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,107,107,0.4);
+      background: rgba(255,107,107,0.12);
+      color: #ffd5d5;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Admin login</h1>
+    <p>Enter the password to access the admin page.</p>
+
+    {% if error %}
+      <div class="err">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="/login">
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <label>Password</label>
+      <input type="password" name="password" placeholder="••••••••" required autofocus>
+
+      <div class="row">
+        <button type="submit">Login</button>
+        <a href="/">← Back to user page</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

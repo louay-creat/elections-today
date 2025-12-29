@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elections Today</title>
+
+  <style>
+    :root{
+      /* 🧡💙 HEART PALETTE */
+      --blue-main:   #2563EB;
+      --blue-soft:   #60A5FA;
+      --blue-dark:   #1E3A8A;
+
+      --orange-main: #F97316;
+      --orange-soft: #FDBA74;
+      --orange-dark: #C2410C;
+
+      /* BASE */
+      --bg-main:     #0F172A;
+      --card-bg:     #111827;
+      --border:      #1E293B;
+
+      /* TEXT */
+      --text-main:   #F8FAFC;
+      --text-muted:  #94A3B8;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 10% 0%, rgba(37,99,235,0.35), transparent 60%),
+                  radial-gradient(1000px 600px at 90% 0%, rgba(249,115,22,0.30), transparent 60%),
+                  linear-gradient(135deg, var(--blue-dark), var(--bg-main));
+      color: var(--text-main);
+      min-height:100vh;
+    }
+
+    .wrap{ max-width: 980px; margin: 0 auto; padding: 28px 18px 60px; }
+
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(17,24,39,0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .logo{
+      width:44px; height:44px; border-radius:16px;
+      background: linear-gradient(135deg, var(--orange-main), var(--blue-main));
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+    }
+    h1{ font-size: 20px; margin:0; }
+    .subtitle{ margin:2px 0 0; color: var(--text-muted); font-size: 13px; }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      color: var(--text-muted);
+      text-decoration:none;
+      background: rgba(15,23,42,0.35);
+    }
+    .pill:hover{ border-color: rgba(96,165,250,0.7); color: var(--text-main); }
+
+    .grid{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(17,24,39,0.72);
+      padding: 16px;
+    }
+
+    .panel h2{
+      margin: 0 0 10px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 650;
+    }
+
+    .options{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .options{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    .opt{
+      display:flex; flex-direction:column; gap:6px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg,
+        rgba(37,99,235,0.20),
+        rgba(249,115,22,0.14)
+      );
+      color: var(--text-main);
+      text-decoration:none;
+      transition: transform .08s ease, border-color .12s ease, background .12s ease;
+      min-height: 74px;
+    }
+    .opt:hover{
+      border-color: rgba(96,165,250,0.7);
+      background: linear-gradient(135deg,
+        rgba(37,99,235,0.30),
+        rgba(249,115,22,0.22)
+      );
+    }
+    .opt:active{ transform: translateY(1px); }
+
+    .opt.selected{
+      border-color: var(--orange-main);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.25);
+      background: linear-gradient(135deg,
+        rgba(37,99,235,0.32),
+        rgba(249,115,22,0.28)
+      );
+    }
+
+    .opt .n{ font-weight: 850; letter-spacing: .2px; }
+    .opt .label{ color: var(--text-muted); font-size: 12px; line-height: 1.2; }
+
+    .resultTitle{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      margin:0 0 10px;
+    }
+    .resultTitle h3{ margin:0; font-size: 18px; }
+
+    .tagLive{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.35);
+      color: var(--text-muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .dot{
+      width:8px; height:8px; border-radius: 50%;
+      background: var(--orange-main);
+      box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
+    }
+
+    .news{
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(15,23,42,0.35);
+      padding: 14px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .empty{
+      color: var(--text-muted);
+      border: 1px dashed rgba(96,165,250,0.5);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(15,23,42,0.22);
+    }
+
+    .footer{
+      margin-top: 14px;
+      color: var(--text-muted);
+      font-size: 12px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Elections Today</h1>
+          <div class="subtitle">Choose an option (1–7) to view the latest update.</div>
+        </div>
+      </div>
+      <a class="pill" href="/admin">✍️ Admin</a>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <h2>Pick a number</h2>
+
+        <div class="options">
+          {% for n, data in updates.items() %}
+            <a class="opt {% if selected == n %}selected{% endif %}" href="/?n={{ n }}">
+              <div class="n">#{{ n }}</div>
+              <div class="label">{{ data.name }}</div>
+            </a>
+          {% endfor %}
+        </div>
+
+        <div class="footer">
+          <div>Selected: <b>{% if item %}#{{ selected }}{% else %}—{% endif %}</b></div>
+          <div>Share this link with users ✅</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Result</h2>
+
+        {% if item %}
+          <div class="resultTitle">
+            <h3>{{ item.name }}</h3>
+            <span class="tagLive"><span class="dot"></span> Live update</span>
+          </div>
+          <div class="news">{{ item.news }}</div>
+        {% else %}
+          <div class="empty">No option selected yet. Click a number on the left.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>
